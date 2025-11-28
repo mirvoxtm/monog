@@ -89,11 +89,11 @@ Monog also supports colors for text with the following syntaxes:
 - [x] Chapters and Arrow-Lists
 - [x] Document Metadata
 - [x] HTML Export
-- [] Automatic Chapter and Summary
-- [] Link, Image, Video and Audio support
-- [] References, Quotes and Footnote support
-- [] Page and Printing support
-- [] PDF Export
-- [] Exportação para Norma ABNT (ABNT Norm Export)
-- [] Custom Stylesheets with TISS
-- [] Euler (Monog's Simple Math Language) Implementation
+- [ ] Automatic Chapter and Summary
+- [ ] Link, Image, Video and Audio support
+- [ ] References, Quotes and Footnote support
+- [ ] Page and Printing support
+- [ ] PDF Export
+- [ ] Exportação para Norma ABNT (ABNT Norm Export)
+- [ ] Custom Stylesheets with TISS
+- [ ] Euler (Monog's Simple Math Language) Implementation
