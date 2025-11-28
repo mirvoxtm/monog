@@ -8,7 +8,7 @@
 <h3 align="center">Monog - The Monographic Notation Grammar</h3>
 <br>
 <p align="center">
-  Monog is an easy - Markdown inspired markup language for academic purposes and uses. It is the follow-up to the previous <a href="markers.mirvox.xyz">Markers Markup Language</a>.
+  Monog is an easy - Markdown inspired markup language for academic purposes and uses. It is the follow-up to the previous <a href="https://markers.mirvox.xyz">Markers Markup Language</a>.
 </p>
 
 ---
