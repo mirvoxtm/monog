@@ -1,0 +1,22 @@
+A Monog Document
+By: Person A, Person B
+At: University of Open Source
+Location: Brazil
+Keywords: Monog, Markup Language
+
+This is a general, informative text that is *not encapsulated* in any tag. It has recursive tag formatting properties.
+
+# This is a Chapter
+This is a chapter, is acts as a section that shall populate a summary or something similar.
+
+# This is another Chapter.
+In the future, more tags shall be available.
+## Nested Chapters
+Also, Chapters can be nested! Chapters are {#0000FF}(automatically closed) when another one (or none) is {0,0,232}(found).
+
+{} [] :)
+
+>> This is a Arrow List
+Content is usually inside of it!
+>>> They also can be Nested!
+Pretty nice, _huh_? 
