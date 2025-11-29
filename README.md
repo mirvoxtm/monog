@@ -1,99 +1,125 @@
-<br>
-<br>
-<br>
+# Binah: The General Purpose Academic Markup Language
+
 <p align="center">
-  <img width="50%" src="resources/img/logo.png" alt="Monog - The Monographic Notation Grammar" style="padding-bottom: 2px" />
+  <img width="30%" src="resources/img/logo.png" alt="Binah - Monographic Infrastructure for Open Research, Integrated Notation & Editing" style="padding-bottom: 2px" />
 </p>
 
-<h3 align="center">Monog - The Monographic Notation Grammar</h3>
-<br>
+<h3 align="center">
+  A simple, powerful, and accessible markup language designed for academic papers, monographs, and general-purpose document editing.
+</h3>
+
+
+
 <p align="center">
-  Monog is an easy - Markdown inspired markup language for academic purposes and uses. It is the follow-up to the previous <a href="https://markers.mirvox.xyz">Markers Markup Language</a>.
+  <a href="https://miragem.app.br/">
+    <img alt="Project Status" src="https://img.shields.io/badge/Status-Development%20(Pre--Alpha)-red"
+  ></a>
+  <a href="#features">
+    <img alt="Focus" src="https://img.shields.io/badge/Focus-Academic-blue"
+  ></a>
+  <a href="#technology">
+    <img alt="Language" src="https://img.shields.io/badge/Built%20With-Haskell-orange"
+  ></a>
 </p>
 
----
+Binah is the next-generation, **Markdown-inspired markup language** focused on simplicity and power for academic and general uses. It is the follow-up to the **Markers Markup Language**, aiming to be the **easiest and most accessible academic paper formatting language** available.
 
-### What to expect from Monog?
-Monog shall have *all of the features currently present in Markers*. This means automatic chapter counting, document conversion and all of the present tags of the previous version.
+Binah is built <strong>entirely in Haskell</strong>, for robust performance and ease of use.
 
-However, Monog aims for a completely new - and easy to learn experience. As such, differently from its predecessor, Monog does not have opening and closing tags - using a completely Markdown inspired syntax, thus making it a completely hands-on, hassle free experience.
+<br>
 
-Monog will also feature it's own custom stylesheet language, available in a separate file or inside the very own `.mon` document.
+## 🚀 Key Features and Advantages
 
-**The general direction is for Monog to be the best, easiest and most accessible academic paper formatting language**.
+Binah is engineered for a **hassle-free** writing and formatting experience, providing the tools needed for professional-grade academic output without the complexity of traditional typesetting systems.
 
----
+* **Markdown-Inspired Syntax:** Forget complex opening and closing tags. Binah adopts a simple, intuitive syntax, making it incredibly **easy to learn** and fast to write.
+* **Automatic Document Structure:** Features like **automatic chapter numbering** and **summary/table of contents generation** are built-in, handling tedious formatting tasks automatically.
+* **Monographic Infrastructure:** Designed specifically to handle the structure of **monographs**, **theses**, and **research papers**.
+* **Built in Haskell:** The entire Binah compiler is implemented in **Haskell**, ensuring **high performance**, **reliability**, and robust **type-safety**.
+* **Custom Styling Language (TISS):** Binah will feature its own custom stylesheet language (TISS), allowing for granular control over the document's appearance, either in a separate file or inline.
+* **Complete Text Formatting:** Full support for **bold** (`*text*`), *italics* (`_text_`), ~~strikethrough~~ (`~text~`), and <u>underline</u> (`__text__`), along with monospaced text and **colored text** using Hexadecimal or RGB syntax.
 
-### What does Monog stand for? Why not keep Markers?
-The name 'Markers' - although i'm very fond of it - makes it hard for people to find and try out the language. As such, Monog stands for ***Monographic Notation Grammar***. That's just a cool acronym, you can use it for other things apart from Monographies.
+<br>
 
-### I'm from Markers! Will I have a way to still use the previous tags?
-Yes, but with an asterisks. This is not the current aim of the language, however, i can assure that in the future, via a _directive_, Markers tags will be available.
+## 📜 Creating a Binah Document
 
----
-## Creating a Monog Document.
-> Please note that currently, Monog does not do much in it's current state. This is for demonstration purposes only.
+A `.binah` document is structured for clarity and ease of use, separating essential document components: **Title**, **Metadata**, and **Content**.
 
-A **Monog** document has the following structure:
-1. Title
-2. Metadata
-3. Content
+### Document Structure
+A Binah document always begins with the title, followed by optional metadata, and then the content.
 
-The first line of text of a `.mon` document _will always be the title of the document_. Subsequent lines can be either Metadata or pure content.
+1.  **Title:** The very first line of the document.
+2.  **Metadata:** Essential academic information defined by simple keywords.
+3.  **Content:** The main body of the paper, composed of text, chapters, lists, etc.
 
-Metadata is defined by the following keywords, in this style:
-- By: (Your Name), (Another Name)
-- At: (Your University/College)
-- Mentor: (Your Mentor's Name)
-- Location: (Your City or General Location)
-- Date: (The Year, Month or Date of the Paper's Publication)
-- Keywords: General, Paper, Keywords
+### Metadata Keywords
+Metadata is defined using simple keywords:
 
-At last, the Content is defined by text, chapters, arrow-lists, lists and every other tag that composes the whole body of the document.
+* `By:` (Author Names)
+* `At:` (Institution/Affiliation)
+* `Mentor:` (Advisor/Mentor's Name)
+* `Location:` (City or General Location)
+* `Date:` (Publication Date)
+* `Keywords:` (SEO-friendly terms, separated by commas)
 
-As such, the most complete form of a Monog document can be:
-```
-A Monog Document
+### Example Document
+
+```binah
+A Binah Document Title
 By: Person A, Person B
 At: University of Open Source
 Location: Brazil
-Keywords: Monog, Markup Language
+Keywords: Binah, Markup Language, Academic Paper, Haskell
 
-This is a general, informative text that is *not encapsulated* in any tag. It has recursive tag formatting properties.
+This is the main body text, which is *not encapsulated* in any structural tag.
 
-# This is a Chapter
-This is a chapter, is acts as a section that shall populate a summary or something similar.
+# This is a Chapter (Level 1 Heading)
+Chapters act as sections and automatically populate the table of contents.
 
-# This is another Chapter.
+# This is the Next Chapter.
 In the future, more tags shall be available.
-## Nested Chapters
-Also, Chapters can be nested! Chapters are automatically closed when another one (or none) is found.
+## Nested Chapters (Level 2 Subheading)
+Chapters are automatically closed when a new one is encountered.
 ```
----
-## Text Formatting
-Monog inspires itself in Markdown for it's text formatting. It's usage is as follows:
-- `*This is a bold text*` -> **This is a bold text**
-- `_This is in italics_` -> *This is in italics*
-- `~This is strikethrough~` -> <s>This is strikethrough</s>
-- `__This is underlined__` -> <u>This is underlined</u>
 
-There is also support for monospaced text with <code>`</code>.
-Monog also supports colors for text with the following syntaxes:
+<br>
 
-- Hexadecimal: `{#FFFFFF}(This is some colored text)`
-- RGB: `{255,255,255}(This is some colored text)`
+## 🎨 Text Formatting
 
----
-### Roadmap
-- [x] Text Formatting
-- [x] Chapters and Arrow-Lists
-- [x] Document Metadata
-- [x] HTML Export
-- [ ] Automatic Chapter and Summary
-- [ ] Link, Image, Video and Audio support
-- [ ] References, Quotes and Footnote support
-- [ ] Page and Printing support
-- [ ] PDF Export
-- [ ] Exportação para Norma ABNT (ABNT Norm Export)
-- [ ] Custom Stylesheets with TISS
-- [ ] Euler (Monog's Simple Math Language) Implementation
+Binah utilizes familiar Markdown-like syntax for inline text styling:
+
+| Syntax | Output | Description |
+| :--- | :--- | :--- |
+| `*This is bold*` | **This is bold** | Bold text |
+| `_This is italic_` | *This is italic* | Italicized text |
+| `~This is strikethrough~` | <s>This is strikethrough</s> | Strikethrough text |
+| `__This is underlined__` | <u>This is underlined</u> | Underlined text |
+| `` `Monospaced` `` | `Monospaced` | Code/Monospaced font |
+| `{#FF0000}(Red Text)` | (The text in red) | Colored text (Hex) |
+| `{0,0,255}(Blue Text)` | (The text in blue) | Colored text (RGB) |
+
+<br>
+
+## 🧭 Roadmap
+
+Binah is in active development. Our goal is to offer a comprehensive feature set essential for academic publishing and research:
+
+* [x] Text Formatting
+* [x] Chapters and Arrow-Lists
+* [x] Document Metadata
+* [x] HTML Export
+* [x] Automatic Chapter and Summary/ToC Generation
+* [x] Bullet Lists, Arrow Lists
+* [ ] Link, Image, Video and Audio Support
+* [ ] References, Quotes, and Footnote Support
+* [ ] Page and Printing Support
+* [ ] PDF Export
+* [ ] Exportação para Norma ABNT (**ABNT Norm Export** - Crucial for Brazilian academia)
+* [ ] Custom Stylesheets with TISS
+* [ ] Euler (Binah's Simple Math Language) Implementation
+
+<br>
+
+## ❓ Markers Users
+
+If you are coming from the previous **Markers Markup Language**, the new syntax is a major shift towards simplicity. However, we plan to support legacy Markers tags in the future via a special **directive** to ensure a smooth transition for existing users.

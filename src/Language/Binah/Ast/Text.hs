@@ -1,5 +1,5 @@
-module Language.Monog.Ast.Text where
-import Language.Monog.Ast.Types
+module Language.Binah.Ast.Text where
+import Language.Binah.Ast.Types
 
 {-
 

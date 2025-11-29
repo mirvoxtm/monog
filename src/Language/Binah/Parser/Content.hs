@@ -1,17 +1,15 @@
-module Language.Monog.Parser.Content
-  ( parseBodyContents
-  ) where
+module Language.Binah.Parser.Content (parseBodyContents) where
 
 import Control.Applicative ((<|>))
 import Control.Monad (guard)
 import Data.Char (isSpace)
 import Data.Void (Void)
-import Language.Monog.Ast.Content
-import Language.Monog.Ast.Text (Writing(..))
-import Language.Monog.Parser.Text (parseWritings)
-import Text.Megaparsec (Parsec, lookAhead, optional, runParser, some, takeWhileP, try, many)
+import Language.Binah.Ast.Content
+import Language.Binah.Ast.Text (Writing(..))
+import Language.Binah.Parser.Text (parseWritings)
+import Text.Megaparsec
 import qualified Text.Megaparsec as MP
-import Text.Megaparsec.Char (char, hspace, hspace1, newline)
+import Text.Megaparsec.Char
 
 type BodyParser = Parsec Void String
 
@@ -28,6 +26,9 @@ parseBodyContents body =
 data BodyToken
   = HeadingToken Int String
   | ArrowListToken Int String
+  | CodeBlockToken [String]
+  | BulletListToken [String]
+  | BreakToken
   | ParagraphToken String
   deriving (Show, Eq)
 
@@ -36,7 +37,7 @@ bodyTokensParser = do
   spaceConsumer
   many (blockToken <* spaceConsumer)
   where
-    blockToken = headingToken <|> arrowListToken <|> paragraphToken
+  blockToken = headingToken <|> arrowListToken <|> codeBlockToken <|> bulletListToken <|> breakToken <|> paragraphToken
 
 headingToken :: BodyParser BodyToken
 headingToken = try $ do
@@ -70,11 +71,47 @@ paragraphLine = try $ do
   preview <- lookAhead (takeWhileP (Just "paragraph preview") (/= '\n'))
   guard (not (isHeadingLine preview))
   guard (not (isArrowLine preview))
+  guard (not (isBulletLine preview))
+  guard (not (isCodeFenceLine preview))
   line <- takeWhileP (Just "paragraph line") (/= '\n')
   let trimmedLine = trim line
   guard (not (null trimmedLine))
   _ <- optional newline
   pure line
+
+bulletListToken :: BodyParser BodyToken
+bulletListToken = try $ do
+  first <- lookAhead (takeWhileP (Just "bullet preview") (/= '\n'))
+  guard (isBulletLine first)
+  lines <- some $ try $ do
+    preview <- lookAhead (takeWhileP (Just "bullet preview") (/= '\n'))
+    guard (isBulletLine preview || isContinuationLine preview)
+    line <- takeWhileP (Just "bullet line") (/= '\n')
+    _ <- optional newline
+    pure line
+  pure (BulletListToken lines)
+
+codeBlockToken :: BodyParser BodyToken
+codeBlockToken = try $ do
+  _ <- takeWhileP (Just "code fence indentation") isInlineSpace
+  _ <- string "```"
+  _ <- takeWhileP (Just "code fence header") (/= '\n')
+  _ <- optional newline
+  lines <- manyTill (takeWhileP (Just "code line") (/= '\n') <* optional newline) (try $ do
+    _ <- takeWhileP (Just "code fence indentation") isInlineSpace
+    _ <- string "```"
+    _ <- optional newline
+    pure ())
+  pure (CodeBlockToken lines)
+
+breakToken :: BodyParser BodyToken
+breakToken = try $ do
+  _ <- takeWhileP (Just "break indentation") isInlineSpace
+  raw <- takeWhileP (Just "break") (/= '\n')
+  _ <- optional newline
+  let s = trim raw
+  guard (s == "___" || s == "---")
+  pure BreakToken
 
 spaceConsumer :: BodyParser ()
 spaceConsumer = MP.skipMany (blankLine <|> trailingSpaces)
@@ -126,6 +163,20 @@ consumeLevel level (ArrowListToken lvl title : rest) =
       arrowList = ArrowList lvl title children
       (siblings, finalRest) = consumeLevel level remaining
   in (arrowList : siblings, finalRest)
+consumeLevel level (BulletListToken lines : rest) =
+  let items = parseBulletList lines
+      (siblings, finalRest) = consumeLevel level rest
+  in (items ++ siblings, finalRest)
+
+consumeLevel level (CodeBlockToken lines : rest) =
+  let codeText = unlines lines
+      codeNode = CodeBlock codeText
+      (siblings, remaining) = consumeLevel level rest
+  in (codeNode : siblings, remaining)
+
+consumeLevel level (BreakToken : rest) =
+  let (siblings, remaining) = consumeLevel level rest
+  in (Break : siblings, remaining)
 consumeLevel level (ParagraphToken text : rest) =
   case paragraphNode text of
     Nothing -> consumeLevel level rest
@@ -137,6 +188,7 @@ paragraphNode :: String -> Maybe Content
 paragraphNode txt =
   case parseParagraph txt of
     [] -> Nothing
+    [Plain s] | trim s == "::Summary::" -> Just Summary
     writings -> Just (Paragraph writings)
 
 parseParagraph :: String -> [Writing]
@@ -150,7 +202,67 @@ normalizeParagraphText :: [String] -> String
 normalizeParagraphText =
   unwords . map trim . filter (not . null . trim)
 
+parseBulletList :: [String] -> [Content]
+parseBulletList lines =
+  let items = splitBulletItems lines
+      bulletItems = map (toBulletItem) items
+  in [BulletList 1 bulletItems]
+
+splitBulletItems :: [String] -> [[Content]]
+splitBulletItems [] = []
+splitBulletItems (line:rest) =
+  if isBulletLine line
+    then
+      let (itemLines, remaining) = span (not . isBulletLine) rest
+          -- remove bullet prefix from first line and dedent continuation lines
+          first = stripBulletMarker line
+          continuations = map stripContinuation itemLines
+          itemStr = unlines (first : continuations)
+          -- parse paragraph writings for the item
+          ws = parseParagraph itemStr
+          itemContent = [Paragraph ws]
+      in itemContent : splitBulletItems remaining
+    else splitBulletItems rest
+
+isBulletLine :: String -> Bool
+isBulletLine raw =
+  let stripped = dropWhile isInlineSpace raw
+  in case stripped of
+      ('-':' ':_) -> True
+      ('*':' ':_) -> True
+      _           -> False
+
+isContinuationLine :: String -> Bool
+isContinuationLine raw =
+  case raw of
+    (c:_) -> isInlineSpace c
+    _     -> False
+
+stripBulletMarker :: String -> String
+stripBulletMarker raw =
+  let stripped = dropWhile isInlineSpace raw
+  in case stripped of
+    ('-':' ':xs) -> xs
+    ('*':' ':xs) -> xs
+    _ -> raw
+
+stripContinuation :: String -> String
+stripContinuation = dropWhile isInlineSpace
+
 trim :: String -> String
 trim = f . f
   where
     f = reverse . dropWhile isSpace
+
+toBulletItem :: [Content] -> Content
+toBulletItem cs =
+  case cs of
+    [Paragraph ws] -> Paragraph ws
+    _ -> -- Flatten nested Paragraphs into a single Paragraph
+      let ws = concat [ ws' | Paragraph ws' <- cs ]
+      in Paragraph ws
+
+isCodeFenceLine :: String -> Bool
+isCodeFenceLine raw =
+  let stripped = dropWhile isInlineSpace raw
+  in take 3 stripped == "```"

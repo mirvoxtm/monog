@@ -1,10 +1,13 @@
-A Monog Document
+A Binah Document
 By: Person A, Person B
 At: University of Open Source
 Location: Brazil
-Keywords: Monog, Markup Language
+Keywords: Binah, Markup Language
 
 This is a general, informative text that is *not encapsulated* in any tag. It has recursive tag formatting properties.
+
+::Summary::
+
 
 # This is a Chapter
 This is a chapter, is acts as a section that shall populate a summary or something similar.
@@ -13,8 +16,10 @@ This is a chapter, is acts as a section that shall populate a summary or somethi
 In the future, more tags shall be available.
 ## Nested Chapters
 Also, Chapters can be nested! Chapters are {#0000FF}(automatically closed) when another one (or none) is {0,0,232}(found).
-
-{} [] :)
+## Attempting a 2.2
+Will this work out?
+### Trying out even more nesting
+Very cool...
 
 >> This is a Arrow List
 Content is usually inside of it!

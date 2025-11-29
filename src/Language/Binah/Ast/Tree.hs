@@ -1,18 +1,18 @@
-module Language.Monog.Ast.Tree where
+module Language.Binah.Ast.Tree where
 
-import Language.Monog.Ast.Content (Content)
-import Language.Monog.Ast.Types (Atom, Title)
+import Language.Binah.Ast.Content (Content)
+import Language.Binah.Ast.Types (Atom, Title)
 
 {-
 
-    The Monog data structure represents the overall structure of a Monog document,
+    The Binah data structure represents the overall structure of a Binah document,
     which consists of preferences and sections. Each section contains a title and
     multiple paragraphs, and each paragraph is made up of formatted text (Writing).
 
 -}
 
 
-data Monog = Document Preferences [Section]
+data Binah = Document Preferences [Section]
              deriving (Show, Eq)
 
 data Preferences = Preference Title [Meta]

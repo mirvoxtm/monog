@@ -1,4 +1,4 @@
-# Revision history for monog
+# Revision history for binah
 
 ## 0.1.0.0 -- YYYY-mm-dd
 

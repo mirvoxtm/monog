@@ -1,8 +1,9 @@
-module Language.Monog.Ast.Types where
+module Language.Binah.Ast.Types where
 
 type Atom = String
 type Title = String
 type Color = (Int, Int, Int)
+type Language = String
 
 type FileP = String
 data File = Image FileP

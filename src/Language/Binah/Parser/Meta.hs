@@ -1,8 +1,8 @@
-module Language.Monog.Parser.Meta where
+module Language.Binah.Parser.Meta where
 
 import Control.Monad (void)
-import Language.Monog.Ast.Tree
-import Language.Monog.Parser.Text (Parser, parseAtom, parseAtomList)
+import Language.Binah.Ast.Tree
+import Language.Binah.Parser.Text (Parser, parseAtom, parseAtomList)
 import Text.Megaparsec (choice, eof, many, try, (<|>))
 import Text.Megaparsec.Char (char, eol, hspace, string)
 

@@ -1,10 +1,10 @@
-module Language.Monog.Parser.Text where
+module Language.Binah.Parser.Text where
 
 import Control.Applicative (many, some)
 import Data.Char (isSpace)
 import Data.Void (Void)
-import Language.Monog.Ast.Text
-import Language.Monog.Ast.Types (Atom, Color)
+import Language.Binah.Ast.Text
+import Language.Binah.Ast.Types (Atom, Color)
 import Numeric (readHex)
 import Text.Megaparsec (Parsec, count, manyTill, sepBy1, takeWhile1P, try, (<|>))
 import Text.Megaparsec.Char (char, digitChar, hspace, hexDigitChar, string)
